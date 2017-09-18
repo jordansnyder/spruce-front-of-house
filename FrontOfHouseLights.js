@@ -170,6 +170,29 @@ var frontOfHouse = {
     clearInterval(this.intervalRainbow);
   },
 
+  // linear interpolation between two values a and b
+  // u controls amount of a/b and is in range [0.0,1.0]
+  getInterpolation: function (a, b, u) {
+    return (1 - u) * a + u * b
+  },
+
+  fade: function (start, end, duration) {
+    var interval = 10,
+      steps = duration / interval,
+      step_u = 1.0 / steps,
+      u = 0.0,
+      theInterval = setInterval(function () {
+        if (u >= 1.0) { clearInterval(theInterval) }
+        var r = parseInt(this.getInterpolation(start.r, end.r, u)),
+          g = parseInt(this.getInterpolation(start.g, end.g, u)),
+          b = parseInt(this.getInterpolation(start.b, end.b, u))
+        this.fill(r, g, b)
+        u += step_u
+      }.bind(this), interval)
+
+    this.intervalFade = theInterval
+  },
+
   allWhite: function () {
     this.fill(255, 255, 255);
   },
