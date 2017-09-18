@@ -1,8 +1,15 @@
 'use strict';
 
-//var ws281x = require('./ws281x-stub'),
-var ws281x = require('rpi-ws281x-native'),
-  _  = require('underscore'),
+var ws281x;
+
+if (process.arch != 'armv61') {
+  ws281x = require('./ws281x-stub');
+}
+else {
+  ws281x = require('rpi-ws281x-native');
+}
+
+  var _  = require('underscore'),
   socket = require('socket.io-client'),
   net = require('net');
 
@@ -100,6 +107,41 @@ var frontOfHouse = {
       pos -= 170;
        return this.rgb2Int(pos * 3, 255 - pos * 3, 0);
     }
+  },
+
+  cycleColors: function () {
+    
+    //this.stop();
+    this.rotateColor()
+
+    this.intervalCycle = setInterval(function () {
+
+      this.rotateColor()
+
+    }.bind(this), this.cycleDelay)
+  },
+
+  rotateColor: function () {
+
+    var start = {},
+      end = {}
+
+    start.r = this.colors[this.currentColorIndex][0]
+    start.g = this.colors[this.currentColorIndex][1]
+    start.b = this.colors[this.currentColorIndex][2]
+
+    if (this.currentColorIndex >= (this.colors.length - 1)) {
+      this.currentColorIndex = 0
+    } else {
+      this.currentColorIndex++
+    }
+
+    end.r = this.colors[this.currentColorIndex][0]
+    end.g = this.colors[this.currentColorIndex][1]
+    end.b = this.colors[this.currentColorIndex][2]
+
+    this.fade(start, end, this.colorFadeDuration)
+
   },
 
   rgb2Int: function (r, g, b) {
