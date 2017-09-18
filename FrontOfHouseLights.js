@@ -1,13 +1,14 @@
 'use strict';
 
-var ws281x = require('./ws281x-stub'), //('rpi-ws281x-native'),
+//var ws281x = require('./ws281x-stub'),
+var ws281x = require('rpi-ws281x-native'),
   _  = require('underscore'),
   socket = require('socket.io-client'),
   net = require('net');
 
 var frontOfHouse = {
   
-  totalLeds: 144,
+  totalLeds: (144 * 4),
   intervalRainbow: null,
   rainbowSpeed: 1,
   rainbowDuration: 30000, // Time in milliseconds for booked appointment to run
