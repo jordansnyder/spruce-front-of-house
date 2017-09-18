@@ -57,7 +57,7 @@ var frontOfHouse = {
 
     this.socket.on('connect', function () {
       console.log('socket connected to appointments');
-      //this.updateStatus();
+      this.cycleColors();
     }.bind(this));
 
     this.socket.on('did-book-appointments', function () {
