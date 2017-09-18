@@ -2,7 +2,7 @@
 
 var ws281x;
 
-if (process.arch != 'armv61') {
+if (process.arch != 'arm') {
   ws281x = require('./ws281x-stub');
 }
 else {
