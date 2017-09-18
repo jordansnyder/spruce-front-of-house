@@ -57,7 +57,14 @@ var frontOfHouse = {
 
     this.socket.on('connect', function () {
       console.log('socket connected to appointments');
+      this.stop();
       this.cycleColors();
+    }.bind(this));
+
+    this.socket.on('disconnect', function() {
+      console.log('socket disconnected');
+      this.stop();
+      this.allGreen();
     }.bind(this));
 
     this.socket.on('did-book-appointments', function () {
@@ -110,7 +117,6 @@ var frontOfHouse = {
   },
 
   cycleColors: function () {
-    
     //this.stop();
     this.rotateColor()
 
